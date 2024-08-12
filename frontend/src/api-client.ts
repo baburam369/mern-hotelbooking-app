@@ -5,6 +5,7 @@ import { SignInFormData } from "./pages/SignIn";
 (|| " ") tells the fetch request to just use the same server for all request */
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
+//register
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
@@ -22,6 +23,7 @@ export const register = async (formData: RegisterFormData) => {
   }
 };
 
+//signIN
 export const signIn = async (formData: SignInFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
@@ -53,6 +55,7 @@ export const validateToken = async () => {
   return response.json();
 };
 
+//signOut
 export const signOut = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: "POST",
@@ -62,4 +65,18 @@ export const signOut = async () => {
   if (!response.ok) {
     throw new Error("Error during sign out");
   }
+};
+
+//add hotel
+export const addMyHotel = async (hotelFormData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    method: "POST",
+    credentials: "include",
+    body: hotelFormData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to add hotel");
+  }
+  return response.json();
 };
