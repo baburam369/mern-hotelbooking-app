@@ -1,5 +1,6 @@
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
+import { HotelType } from "../../backend/src/shared/types";
 
 /* when we bundle our frontend and backend for production we won't have api_base_url
 (|| " ") tells the fetch request to just use the same server for all request */
@@ -77,6 +78,22 @@ export const addMyHotel = async (hotelFormData: FormData) => {
 
   if (!response.ok) {
     throw new Error("Failed to add hotel");
+  }
+  return response.json();
+};
+
+//fetch hotel(s)
+export const fetchMyHotels = async (): Promise<
+  HotelType[]
+> /*it means frontend and backend are working on same type*/ => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    method: "GET",
+    credentials: "include",
+    /*http cookie is sent automatically so no need to send anything in the body */
+  });
+
+  if (!response.ok) {
+    throw new Error("Error fetching hotels");
   }
   return response.json();
 };

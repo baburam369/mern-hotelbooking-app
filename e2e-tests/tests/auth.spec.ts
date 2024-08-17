@@ -12,8 +12,8 @@ test("should allow sign in", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Sign In" })).toBeVisible();
 
   //add required fields
-  await page.locator("[name=email]").fill("ajy@g.com");
-  await page.locator("[name=password]").fill("password");
+  await page.locator("[name=email]").fill("Ajayup1@gmail.com");
+  await page.locator("[name=password]").fill("111111");
 
   //click the signup button
   await page.getByRole("button", { name: "Login" }).click();
