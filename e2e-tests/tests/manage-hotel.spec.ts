@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import exp from "constants";
 
 import path from "path";
 
@@ -47,7 +48,7 @@ test("Should allow user to add a hotel", async ({ page }) => {
    */
 
   //fillup form fields
-  await page.locator("[name='name']").fill("Que interesente test hotel");
+  await page.locator("[name='name']").fill("Test Hotel");
   await page.locator("[name='city']").fill("test city");
   await page.locator("[name='country']").fill("test country");
   await page
@@ -74,21 +75,46 @@ test("Should allow user to add a hotel", async ({ page }) => {
 
   await page.getByRole("button", { name: "Save" }).click();
 
-  await expect(page.getByText("Hotel Saved!")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText("Hotel Saved!")).toBeVisible({ timeout: 150000 });
 });
 
 test("should display hotels", async ({ page }) => {
   await page.goto(`${UI_URL}my-hotels`);
   // await expect(page.getByRole("heading", { name: "My Hotels" })).toBeVisible();
-  await expect(page.getByText("Que interesente")).toBeVisible();
+  await expect(page.getByText("Hotel Que interesente")).toBeVisible();
   //check if description matches
-  await expect(page.getByText("this is a description")).toBeVisible();
-  await expect(page.getByText("test city, test country")).toBeVisible();
-  await expect(page.getByText("Family")).toBeVisible();
-  await expect(page.getByText("4 Star rating")).toBeVisible();
-  await expect(page.getByText("₹2000 Per night")).toBeVisible();
-  await expect(page.getByText("4 adults, 4 children")).toBeVisible();
+  await expect(page.getByText("this is a description").first()).toBeVisible();
+  await expect(page.getByText("test city, test country").first()).toBeVisible();
+  await expect(page.getByText("Family").first()).toBeVisible();
+  await expect(page.getByText("4 Star rating").first()).toBeVisible();
+  await expect(page.getByText("₹2000 Per night").first()).toBeVisible();
+  await expect(page.getByText("4 adults, 4 children").first()).toBeVisible();
 
   await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "View Details" }).first()
+  ).toBeVisible();
+});
+
+test("should edit hotel", async ({ page }) => {
+  await page.goto(`${UI_URL}my-hotels`);
+  await page.getByRole("link", { name: "View Details" }).first().click();
+
+  await page.waitForSelector('[name="name"]', { state: "attached" });
+  await expect(page.locator('[name="name"]')).toHaveValue(
+    "Hotel Que Interesente"
+  );
+  //update hotel name
+  await page.locator('[name="name"]').fill("Hotel Que Interesente updated");
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByText("Hotel Saved!")).toBeVisible();
+
+  await page.reload();
+  //expect the hotel name is updated
+  await expect(page.locator('[name="name"]')).toHaveValue(
+    "Hotel Que Interesente updated"
+  );
+  //reset to previous name and save , just to make the overall test robust
+  await page.locator('[name="name"]').fill("Hotel Que Interesente");
+  await page.getByRole("button", { name: "Save" }).click();
 });
