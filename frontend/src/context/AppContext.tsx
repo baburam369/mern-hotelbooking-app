@@ -15,11 +15,11 @@ type AppContext = {
 
 const AppContext = createContext<AppContext | undefined>(undefined);
 
-export const AppContextProvider = ({
-  children,
-}: {
+type AppContextProviderProps = {
   children: React.ReactNode;
-}) => {
+};
+
+export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
   const { isError } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
