@@ -58,8 +58,11 @@ const SearchBar = () => {
             className="w-full p-1 focus:outline-none font-bold"
             min={1}
             max={20}
-            value={adultCount}
-            onChange={(event) => setAdultCount(parseInt(event.target.value))}
+            value={adultCount || ""}
+            onChange={(event) => {
+              const value = event.target.value;
+              setAdultCount(value === "" ? 0 : parseInt(value));
+            }}
           />
         </label>
         <label className="items-center flex">
@@ -69,8 +72,11 @@ const SearchBar = () => {
             className=" w-full p-1 focus:outline-none font-bold"
             min={0}
             max={20}
-            value={childCount}
-            onChange={(event) => setChildCount(parseInt(event.target.value))}
+            value={childCount || ""}
+            onChange={(event) => {
+              const value = event.target.value;
+              setChildCount(value === "" ? 0 : parseInt(value));
+            }}
           />
         </label>
       </div>
