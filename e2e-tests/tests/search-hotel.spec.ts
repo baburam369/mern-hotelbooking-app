@@ -61,4 +61,8 @@ test("should book a room", async ({ page }) => {
 
   await page.getByRole("button", { name: "Confirm Booking" }).click();
   await expect(page.getByText("Booking Saved!")).toBeVisible();
+
+  //check if hotel booked
+  await page.getByRole("link", { name: "My Bookings" }).click();
+  await expect(page.getByText("Desi Family Hotel")).toBeVisible();
 });
